@@ -78,7 +78,7 @@ metadata {
 		}
 
 		valueTile("temperature", "device.temperature", inactiveLabel: false, width: 2, height: 2) {
-			state "temperature", label:'${currentValue}�',
+			state "temperature", label:'${currentValue}째',
 				backgroundColors:[
 					[value: 31, color: "#153591"],
 					[value: 44, color: "#1e9cbb"],
@@ -400,7 +400,7 @@ private handleTemperatureEvent(cmd) {
 		val = safeToInt("${val}"[0..-2])
 	}
 			
-	result << createEvent(createEventMap("temperature", val, null, "Temperature ${val}�${getTemperatureScale()}", getTemperatureScale()))
+	result << createEvent(createEventMap("temperature", val, null, "Temperature ${val}째${getTemperatureScale()}", getTemperatureScale()))
 	return result
 }
 
@@ -618,7 +618,7 @@ private getTempOptions(defaultVal=null, data=[:]) {
 			options["${data?.zeroName}"] = i
 		}
 		else {
-			options["${i.toBigDecimal() * 0.1}캜 / ${(((i.toBigDecimal() * 0.1)*9)/5)}캟"] = i
+			options["${i.toBigDecimal() * 0.1}째C / ${(((i.toBigDecimal() * 0.1)*9)/5)}째F"] = i
 		}
 	}
 	return setDefaultOption(options, defaultVal)

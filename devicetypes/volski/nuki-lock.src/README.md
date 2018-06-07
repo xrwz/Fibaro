@@ -3,7 +3,6 @@ Smartthings-nuki
 nuki smart lock controller for Smartthings steps to install the device handler:
 
 Copy the code and login into the smartthings console https://graph.api.smartthings.com (EU Site https://graph-eu01-euwest1.api.smartthings.com)
-
 At the top of the console click on "My Device Handlers"
 Click on "Create New Device Handler"
 Next on the top select "From Code"

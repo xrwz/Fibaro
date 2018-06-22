@@ -5,7 +5,7 @@
 
 metadata {
         definition (name: "Virtual Mobile Presence", namespace: "ajpri", author: "Austin Pritchett") {
-        capability "Switch"
+        //capability "Switch"
         capability "Refresh"
         capability "Presence Sensor"
 		capability "Sensor"
@@ -37,13 +37,13 @@ def parse(String description) {
 }
 
 def on() {
-	sendEvent(name: "switch", value: "on")
+	//sendEvent(name: "switch", value: "on")
     sendEvent(name: "presence", value: "present")
 
 }
 
 def off() {
-	sendEvent(name: "switch", value: "off")
+	//sendEvent(name: "switch", value: "off")
     sendEvent(name: "presence", value: "not present")
 
 }

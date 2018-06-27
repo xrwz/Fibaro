@@ -67,6 +67,8 @@ def updated() {
 }
 
 def init() {
+  state.enabled = true
+
   if(endpoint) {
     subscribe(location, "mode",                modeEventFired)
     subscribe(switches, "switch",              switchFired)
@@ -200,6 +202,24 @@ path("/presence/:id/:command") {
   path("/list") {
     action: [GET: "listDevices"]
   }
+
+  path("/state/:command") {
+    action: [GET: "setState"]
+  }
+}
+
+def setState() {
+  switch(params.command) {
+    case "enabled":
+      state.enabled = true
+      break
+    case "disabled":
+      state.enabled = false
+      break
+    //default:
+  }
+  
+  log.debug "state: ${state.enabled}"
 }
 
 def listDevices() {
@@ -207,9 +227,11 @@ def listDevices() {
 }
 
 def printDevices(device, newValue) {
-  def mode = params.mode ? params.mode : location.mode
+  def mode = params.mode ?: location.mode
 
-  return [mode: mode, devices: (settings.switches + settings.locks + settings.contact + settings.moisture + settings.motion + settings.presence).collect{deviceJson(it, device, newValue)}]
+  //return [mode: mode, devices: (settings.switches + settings.locks + settings.contact + settings.moisture + settings.motion + settings.presence).collect{deviceJson(it, device, newValue)}]
+  // first settings.<capability> has to be not null
+  return [mode: mode, devices: (settings.presence + settings.switches + settings.locks + settings.contact + settings.moisture + settings.motion).collect{deviceJson(it, device, newValue)}]
 }
 
 def deviceJson(it, device, newValue) {
@@ -239,7 +261,7 @@ def updateSwitch() {
 }
 
 def updatePresence() {
-  update(presence, "switch")
+  update(presence, "")
 }
 
 def updateLock() {
@@ -256,6 +278,11 @@ def updateMode() {
 }
 
 def update(devices, type) {
+
+  if (!state.enabled) {
+    return ["Disabled: not accepting commands"]
+  }
+
   def command  = params.command
   def device   = devices.find { it.id == params.id }
   def newValue = ""
